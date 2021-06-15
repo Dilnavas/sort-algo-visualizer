@@ -1,25 +1,66 @@
-import logo from './logo.svg';
-import './App.css';
-
-function App() {
+import Visualizer from './components/Visualizer'
+import 'bootstrap/dist/css/bootstrap.min.css'
+import Header from './components/Header'
+import Footer from './components/Footer'
+import { useState } from 'react'
+import { arrayGenerator } from './utils/arrayGenerator'
+import {
+  bubbleSortAnimation,
+  selectionSortAnimation,
+  insertionSortAnimation,
+} from './utils/animations'
+const App = () => {
+  const [windowSize, setWindowSize] = useState(window.innerWidth)
+  const handleWindowSizeChange = () => {
+    setWindowSize(window.innerWidth)
+  }
+  window.addEventListener('resize', () => {
+    handleWindowSizeChange()
+  })
+  const isMobile = windowSize <= 500
+  const viewPort = isMobile ? 'mobile' : 'laptop'
+  const [array, setArray] = useState(arrayGenerator(true, viewPort))
+  const [bubbleSortMode, setBubbleSortMode] = useState(0)
+  const [selectionSortMode, setSelectionSortMode] = useState(0)
+  const [insertionSortMode, setInsertionSortMode] = useState(0)
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <Header
+        array={array}
+        device={viewPort}
+        onClick={{
+          setArray,
+          bubbleSortAnimation,
+          selectionSortAnimation,
+          insertionSortAnimation,
+          setBubbleSortMode,
+          setInsertionSortMode,
+          setSelectionSortMode,
+        }}
+        modes={{ bubbleSortMode, insertionSortMode, selectionSortMode }}
+      />
+      {isMobile ? (
+        <Visualizer
+          viewPort='mobile'
+          array={array}
+          modes={{ bubbleSortMode, insertionSortMode, selectionSortMode }}
+        />
+      ) : (
+        <Visualizer
+          viewPort='laptop'
+          array={array}
+          onClick={{
+            setArray,
+            setBubbleSortMode,
+            setInsertionSortMode,
+            setSelectionSortMode,
+          }}
+          modes={{ bubbleSortMode, insertionSortMode, selectionSortMode }}
+        />
+      )}
+      <Footer />
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
