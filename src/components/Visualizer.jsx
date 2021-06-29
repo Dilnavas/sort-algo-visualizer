@@ -235,7 +235,7 @@ const Visualizer = ({ viewPort, array, onClick, modes }) => {
           className='description-container'
           style={
             viewPort === 'laptop'
-              ? { height: '1100px' }
+              ? { height: '1500px' }
               : { height: 'fit-content' }
           }
         >
@@ -269,7 +269,7 @@ const Visualizer = ({ viewPort, array, onClick, modes }) => {
             ]}
             algorithm={[]}
             code={
-              'function insertionSort(arr, n) {\n let i, key, j;\n for (i = 1; i < n; i++) {\n  key = arr[i];\n  j = i - 1;\n  while (j >= 0 && arr[j] > key) {\n   arr[j + 1] = arr[j];\n   j = j - 1;\n  }\n  arr[j + 1] = key;\n }\n}'
+              ' // QuickSort Function \n function quickSort(arr, left, right) {\n if (left < right) {\n  const index = partition(arr, left, right);\n  quickSort(arr, left, index);\n  quickSort(arr, index + 1, right);\n  }\n }\n\n // Partition Function \n function partition(arr, left, right) {\n  const pivot = arr[Math.floor((left+right)/2)];\n  while (true) {\n   while (arr[left] < pivot) {\n    left++;\n   }\n   while (arr[right] > pivot) {\n    right--;\n   }\n   if (left >= right) {\n    return right;\n   }\n   swap(arr, left, right);\n  }\n }\n\n // Swap Function \n function swap(arr, i, j) {\n  const tmp = arr[i];\n  arr[i] = arr[j];\n  arr[j] = tmp;\n }'
             }
           />
         </div>
