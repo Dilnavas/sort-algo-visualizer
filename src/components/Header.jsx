@@ -32,13 +32,15 @@ const Header = ({ device, onClick, array, modes }) => {
                   if (
                     modes.bubbleSortMode ||
                     modes.insertionSortMode ||
-                    modes.selectionSortMode
+                    modes.selectionSortMode ||
+                    modes.quickSortMode
                   )
                     return null
                   else {
                     onClick.setBubbleSortMode(0)
                     onClick.setInsertionSortMode(0)
                     onClick.setSelectionSortMode(0)
+                    onClick.setQuickSortMode(0)
                     onClick.setArray(arrayGenerator(false, 'mobile'))
                   }
                 }}
@@ -51,13 +53,15 @@ const Header = ({ device, onClick, array, modes }) => {
                   if (
                     modes.insertionSortMode ||
                     modes.selectionSortMode ||
-                    modes.bubbleSortMode
+                    modes.bubbleSortMode ||
+                    modes.quickSortMode
                   )
                     return null
                   else {
                     onClick.setBubbleSortMode(1)
                     onClick.setInsertionSortMode(0)
                     onClick.setSelectionSortMode(0)
+                    onClick.setQuickSortMode(0)
                     const completed = await onClick.bubbleSortAnimation(array)
                     if (completed) onClick.setBubbleSortMode(0)
                   }
@@ -71,13 +75,15 @@ const Header = ({ device, onClick, array, modes }) => {
                   if (
                     modes.bubbleSortMode ||
                     modes.selectionSortMode ||
-                    modes.insertionSortMode
+                    modes.insertionSortMode ||
+                    modes.quickSortMode
                   )
                     return null
                   else {
                     onClick.setInsertionSortMode(1)
                     onClick.setBubbleSortMode(0)
                     onClick.setSelectionSortMode(0)
+                    onClick.setQuickSortMode(0)
                     const completed = await onClick.insertionSortAnimation(
                       array
                     )
@@ -93,13 +99,15 @@ const Header = ({ device, onClick, array, modes }) => {
                   if (
                     modes.bubbleSortMode ||
                     modes.insertionSortMode ||
-                    modes.selectionSortMode
+                    modes.selectionSortMode ||
+                    modes.quickSortMode
                   )
                     return null
                   else {
                     onClick.setSelectionSortMode(1)
                     onClick.setBubbleSortMode(0)
                     onClick.setInsertionSortMode(0)
+                    onClick.setQuickSortMode(0)
                     const completed = await onClick.selectionSortAnimation(
                       array
                     )
@@ -109,7 +117,32 @@ const Header = ({ device, onClick, array, modes }) => {
               >
                 Selection Sort
               </NavItem>
-              <NavItem className='font'>Quick Sort</NavItem>
+              <NavItem
+                className='font'
+                onClick={async () => {
+                  if (
+                    modes.bubbleSortMode ||
+                    modes.insertionSortMode ||
+                    modes.selectionSortMode ||
+                    modes.quickSortMode
+                  )
+                    return null
+                  else {
+                    onClick.setQuickSortMode(1)
+                    onClick.setSelectionSortMode(0)
+                    onClick.setBubbleSortMode(0)
+                    onClick.setInsertionSortMode(0)
+                    const completed = await onClick.quickSortAnimation(
+                      0,
+                      array.length - 1,
+                      array
+                    )
+                    if (completed) onClick.setQuickSortMode(0)
+                  }
+                }}
+              >
+                Quick Sort
+              </NavItem>
             </Nav>
           </Navbar.Collapse>
         )}

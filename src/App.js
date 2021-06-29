@@ -8,6 +8,7 @@ import {
   bubbleSortAnimation,
   selectionSortAnimation,
   insertionSortAnimation,
+  quickSortAnimation,
 } from './utils/animations'
 const App = () => {
   const [windowSize, setWindowSize] = useState(window.innerWidth)
@@ -23,6 +24,7 @@ const App = () => {
   const [bubbleSortMode, setBubbleSortMode] = useState(0)
   const [selectionSortMode, setSelectionSortMode] = useState(0)
   const [insertionSortMode, setInsertionSortMode] = useState(0)
+  const [quickSortMode, setQuickSortMode] = useState(0)
   return (
     <div>
       <Header
@@ -33,17 +35,29 @@ const App = () => {
           bubbleSortAnimation,
           selectionSortAnimation,
           insertionSortAnimation,
+          quickSortAnimation,
           setBubbleSortMode,
           setInsertionSortMode,
           setSelectionSortMode,
+          setQuickSortMode,
         }}
-        modes={{ bubbleSortMode, insertionSortMode, selectionSortMode }}
+        modes={{
+          bubbleSortMode,
+          insertionSortMode,
+          selectionSortMode,
+          quickSortMode,
+        }}
       />
       {isMobile ? (
         <Visualizer
           viewPort='mobile'
           array={array}
-          modes={{ bubbleSortMode, insertionSortMode, selectionSortMode }}
+          modes={{
+            bubbleSortMode,
+            insertionSortMode,
+            selectionSortMode,
+            quickSortMode,
+          }}
         />
       ) : (
         <Visualizer
@@ -54,8 +68,14 @@ const App = () => {
             setBubbleSortMode,
             setInsertionSortMode,
             setSelectionSortMode,
+            setQuickSortMode,
           }}
-          modes={{ bubbleSortMode, insertionSortMode, selectionSortMode }}
+          modes={{
+            bubbleSortMode,
+            insertionSortMode,
+            selectionSortMode,
+            quickSortMode,
+          }}
         />
       )}
       <Footer />

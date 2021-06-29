@@ -133,3 +133,87 @@ export const insertionSortAnimation = async (array) => {
   }
   return true
 }
+const hoarePartition = async (l, r, array, delay = 200) => {
+  var blocks = document.querySelectorAll('.block')
+  var pivot = Number(blocks[l].style.height.split('p')[0])
+
+  var i = l - 1
+  var j = r + 1
+
+  while (true) {
+    // Find leftmost element greater than
+    // or equal to pivot
+    do {
+      i++
+      if (i - 1 >= l) blocks[i - 1].style.backgroundColor = 'red'
+      blocks[i].style.backgroundColor = 'yellow'
+      //To wait for 700 milliseconds
+      await new Promise((resolve) =>
+        setTimeout(() => {
+          resolve()
+        }, delay)
+      )
+    } while (Number(blocks[i].style.height.split('p')[0]) < pivot)
+
+    // Find rightmost element smaller than
+    // or equal to pivot
+    do {
+      j--
+      if (j + 1 <= r) blocks[j + 1].style.backgroundColor = 'magenta'
+      blocks[j].style.backgroundColor = 'yellow'
+      //To wait for 700 milliseconds
+      await new Promise((resolve) =>
+        setTimeout(() => {
+          resolve()
+        }, delay)
+      )
+    } while (Number(blocks[j].style.height.split('p')[0]) > pivot)
+
+    // If two pointers met.
+    if (i >= j) {
+      for (var k = 0; k < r + 1; k++)
+        blocks[k].style.backgroundColor = '#a7d129'
+      return j
+    }
+
+    //swapping ith and jth element
+    var temp1 = blocks[i].style.height
+    var temp2 = array[i]
+    blocks[i].style.height = blocks[j].style.height
+    array[i] = array[j]
+    blocks[j].style.height = temp1
+    array[j] = temp2
+    //To wait for 700 milliseconds
+    await new Promise((resolve) =>
+      setTimeout(() => {
+        resolve()
+      }, delay)
+    )
+  }
+}
+
+export const quickSortAnimation = async (l, r, array, delay = 100) => {
+  const blocks = document.querySelectorAll('.block')
+  let sorted = true
+  for (let i = 0; i < blocks.length - 1; i++) {
+    if (
+      Number(blocks[i].style.height.split('p')[0]) >
+      Number(blocks[i + 1].style.height.split('p')[0])
+    ) {
+      sorted = false
+      break
+    }
+  }
+
+  // QuickSort Algorithm
+  if (!sorted)
+    if (l < r) {
+      //Storing the index of pivot element after partition
+      var pivot_idx = await hoarePartition(l, r, array)
+      //Recursively calling quicksort for left partition
+      await quickSortAnimation(l, pivot_idx, array)
+      //Recursively calling quicksort for right partition
+      await quickSortAnimation(pivot_idx + 1, r, array)
+    }
+  return true
+}

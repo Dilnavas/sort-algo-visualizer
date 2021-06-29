@@ -2,6 +2,7 @@ import { arrayGenerator } from '../utils/arrayGenerator'
 import {
   bubbleSortAnimation,
   insertionSortAnimation,
+  quickSortAnimation,
   selectionSortAnimation,
 } from '../utils/animations'
 import Block from './Block'
@@ -22,12 +23,14 @@ const Visualizer = ({ viewPort, array, onClick, modes }) => {
                 onClick.setBubbleSortMode(0)
                 onClick.setInsertionSortMode(0)
                 onClick.setSelectionSortMode(0)
+                onClick.setQuickSortMode(0)
                 onClick.setArray(arrayGenerator(false, viewPort))
               }}
               disabled={
                 modes.bubbleSortMode ||
                 modes.insertionSortMode ||
-                modes.selectionSortMode
+                modes.selectionSortMode ||
+                modes.quickSortMode
                   ? true
                   : false
               }
@@ -40,13 +43,15 @@ const Visualizer = ({ viewPort, array, onClick, modes }) => {
                 onClick.setBubbleSortMode(1)
                 onClick.setInsertionSortMode(0)
                 onClick.setSelectionSortMode(0)
+                onClick.setQuickSortMode(0)
                 const completed = await bubbleSortAnimation(array)
                 if (completed) onClick.setBubbleSortMode(0)
               }}
               disabled={
                 modes.insertionSortMode ||
                 modes.selectionSortMode ||
-                modes.bubbleSortMode
+                modes.bubbleSortMode ||
+                modes.quickSortMode
                   ? true
                   : false
               }
@@ -59,13 +64,15 @@ const Visualizer = ({ viewPort, array, onClick, modes }) => {
                 onClick.setInsertionSortMode(1)
                 onClick.setSelectionSortMode(0)
                 onClick.setBubbleSortMode(0)
+                onClick.setQuickSortMode(0)
                 const completed = await insertionSortAnimation(array)
                 if (completed) onClick.setInsertionSortMode(0)
               }}
               disabled={
                 modes.bubbleSortMode ||
                 modes.selectionSortMode ||
-                modes.insertionSortMode
+                modes.insertionSortMode ||
+                modes.quickSortMode
                   ? true
                   : false
               }
@@ -78,20 +85,44 @@ const Visualizer = ({ viewPort, array, onClick, modes }) => {
                 onClick.setSelectionSortMode(1)
                 onClick.setInsertionSortMode(0)
                 onClick.setBubbleSortMode(0)
+                onClick.setQuickSortMode(0)
                 const completed = await selectionSortAnimation(array)
                 if (completed) onClick.setSelectionSortMode(0)
               }}
               disabled={
                 modes.insertionSortMode ||
                 modes.bubbleSortMode ||
-                modes.selectionSortMode
+                modes.selectionSortMode ||
+                modes.quickSortMode
                   ? true
                   : false
               }
             >
               Selection Sort
             </button>
-            <button className='button' onClick={async () => {}}>
+            <button
+              className='button'
+              onClick={async () => {
+                onClick.setQuickSortMode(1)
+                onClick.setBubbleSortMode(0)
+                onClick.setInsertionSortMode(0)
+                onClick.setSelectionSortMode(0)
+                const completed = await quickSortAnimation(
+                  0,
+                  array.length - 1,
+                  array
+                )
+                if (completed) onClick.setQuickSortMode(0)
+              }}
+              disabled={
+                modes.insertionSortMode ||
+                modes.bubbleSortMode ||
+                modes.selectionSortMode ||
+                modes.quickSortMode
+                  ? true
+                  : false
+              }
+            >
               Quick Sort
             </button>
           </>
@@ -193,6 +224,50 @@ const Visualizer = ({ viewPort, array, onClick, modes }) => {
               'Insert the value',
               'Repeat until list is sorted',
             ]}
+            code={
+              'function insertionSort(arr, n) {\n let i, key, j;\n for (i = 1; i < n; i++) {\n  key = arr[i];\n  j = i - 1;\n  while (j >= 0 && arr[j] > key) {\n   arr[j + 1] = arr[j];\n   j = j - 1;\n  }\n  arr[j + 1] = key;\n }\n}'
+            }
+          />
+        </div>
+      )}
+      {modes.quickSortMode && (
+        <div
+          className='description-container'
+          style={
+            viewPort === 'laptop'
+              ? { height: '1100px' }
+              : { height: 'fit-content' }
+          }
+        >
+          <Description
+            key='quickSort'
+            name='Quick Sort'
+            description='Quick sort is a highly efficient sorting algorithm and is based on partitioning of array of data into smaller arrays. A large array is partitioned into two arrays one of which holds values smaller than the specified value, say pivot, based on which the partition is made and another array holds values greater than the pivot value.Quicksort partitions an array and then calls itself recursively twice to sort the two resulting subarrays. This algorithm is quite efficient for large-sized data sets as its average and worst-case complexity are O(n2), respectively.'
+            subAlgorithm={[
+              {
+                heading: 'Partition Algorithm',
+                algorithm: [
+                  'Choose the highest index value has pivot',
+                  'Take two variables to point left and right of the list excluding pivot',
+                  'left points to the low index',
+                  'right points to the high',
+                  'while value at left is less than pivot move right',
+                  'while value at right is greater than pivot move left',
+                  'if both step 5 and step 6 does not match swap left and right',
+                  'if left ≥ right, the point where they met is new pivot',
+                ],
+              },
+              {
+                heading: 'Quick Sort Algorithm',
+                algorithm: [
+                  'Make the right-most index value pivot',
+                  'partition the array using pivot value',
+                  'quicksort left partition recursively',
+                  'quicksort right partition recursively',
+                ],
+              },
+            ]}
+            algorithm={[]}
             code={
               'function insertionSort(arr, n) {\n let i, key, j;\n for (i = 1; i < n; i++) {\n  key = arr[i];\n  j = i - 1;\n  while (j >= 0 && arr[j] > key) {\n   arr[j + 1] = arr[j];\n   j = j - 1;\n  }\n  arr[j + 1] = key;\n }\n}'
             }
